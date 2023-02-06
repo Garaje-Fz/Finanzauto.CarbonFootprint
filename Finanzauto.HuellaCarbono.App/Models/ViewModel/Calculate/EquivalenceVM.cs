@@ -11,7 +11,8 @@ namespace Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string Image { get; set; }
-        public string Calculo { get; set; }
+        public double Calculo { get; set; }
+        public double Equivalencia { get; set; }
         public int Orden { get; set; }
     }
 }

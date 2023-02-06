@@ -10,11 +10,12 @@ using Finanzauto.HuellaCarbono.App.Contracts.Persistence;
 using Azure;
 using Finanzauto.HuellaCarbono.App.Features.Logic.Calculator;
 using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate;
+using Finanzauto.HuellaCarbono.App.Features.Fuels.Queries;
 
 namespace Finanzauto.HuellaCarbono.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Get")]
     public class HuellaCarbonoController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -54,12 +55,19 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
             return Ok(await _mediator.Send(command));
         }
 
-        [HttpPost("Info")]
-        public async Task<ActionResult<List<ResponseVM>>> GetInfo([FromBody]GetInfoCalculate request)
+        [HttpPost("Fuels")]
+        public async Task<ActionResult<List<FuelVM>>> GetFuels([FromBody]GetFuelsQuery command)
         {
-            Calculator info = new Calculator(_mediator, _unitOfWork);
-            var calculate = info.ResponseCalculators(request.Id_Line, request.Kilometraje);
-            return Ok(calculate);
+            return Ok(await _mediator.Send(command));
+        }
+
+        [HttpPost("Info")]
+        public async Task<ActionResult<Tuple<ResponseVM, AveragueVM>>> GetInfo([FromBody]GetInfoCalculate command)
+        {
+            var response = await _mediator.Send(command);
+            if (command.Kilometraje > 0)
+                return Ok(response.Item1);
+            return Ok(response.Item2);
         }
     }
 }

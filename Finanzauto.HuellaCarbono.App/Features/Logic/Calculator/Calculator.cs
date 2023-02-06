@@ -1,5 +1,6 @@
 ﻿using Finanzauto.HuellaCarbono.App.Contracts.Persistence;
 using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate;
+using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate.Equivalences;
 using Finanzauto.HuellaCarbono.Domain;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -8,39 +9,25 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
 {
     public class Calculator
     {
-        private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
 
-        public Calculator(IMediator mediator, IUnitOfWork unitOfWork)
+        public Calculator(IUnitOfWork unitOfWork)
         {
-            _mediator = mediator;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseVM> ResponseCalculators(int linea, int km)
+        public double CalcEqui(double emisionTnKmdouble ,double equivalence)
         {
             try
             {
-                var response = new List<ResponseVM>();
-                var line = _unitOfWork.Repository<line>().GetAsync(x => x.linId == linea);
-                double emisionGrKm = Convert.ToDouble(line.Result[0].EmisionesCO2_GrKm) 
-                    , emisionTnKm = km * Convert.ToDouble(line.Result[0].huellaCarbono_TonKm);
-                response[0].Emisiones_Gr_Km = emisionGrKm;
-                response[0].Emisiones_Tn_Km = emisionTnKm;
-
-                return response[0];
+                double result = emisionTnKmdouble * equivalence;
+                result = Math.Round(result, 0, MidpointRounding.ToEven);
+                return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception("Error al calcular equivalencia" + ex);
             }
-        }
-
-        public string CalculateTonKm()
-        {
-
-            return$"{CalculateTonKm()}";
         }
     }
 }

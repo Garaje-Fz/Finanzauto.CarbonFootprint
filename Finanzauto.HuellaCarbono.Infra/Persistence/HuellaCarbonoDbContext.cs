@@ -19,8 +19,8 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Datos Iniciales
-            List<Identity> InitIdentities = new List<Identity>();
-            InitIdentities.Add(new Identity
+            List<identity> InitIdentities = new List<identity>();
+            InitIdentities.Add(new identity
             {
                 idnId = 1,
                 idnName = "Compensacion en arboles.",
@@ -29,7 +29,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 idnEquivalence = 15,
                 idnOrden = 1
             });
-            InitIdentities.Add(new Identity
+            InitIdentities.Add(new identity
             {
                 idnId = 2,
                 idnName = "Consumo cargar celulares.",
@@ -38,7 +38,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 idnEquivalence = 110352,
                 idnOrden = 2
             });
-            InitIdentities.Add(new Identity
+            InitIdentities.Add(new identity
             {
                 idnId = 3,
                 idnName = "Consumo viajes a San Andres.",
@@ -47,7 +47,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 idnEquivalence = 9,
                 idnOrden = 3
             });
-            InitIdentities.Add(new Identity
+            InitIdentities.Add(new identity
             {
                 idnId = 4,
                 idnName = "Consumo en computadores.",
@@ -56,7 +56,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 idnEquivalence = 4.5,
                 idnOrden = 4
             });
-            InitIdentities.Add(new Identity
+            InitIdentities.Add(new identity
             {
                 idnId = 5,
                 idnName = "Consumo en carne.",
@@ -66,6 +66,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 idnOrden = 5
             });
             #endregion
+
             modelBuilder.HasDefaultSchema("hhcc");
             modelBuilder.Entity<brand>(brands =>
             {
@@ -92,7 +93,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 fuels.ToTable("Fuels");
                 fuels.HasKey(p => p.fueId);
             });
-            modelBuilder.Entity<Identity>(identities =>
+            modelBuilder.Entity<identity>(identities =>
             {
                 identities.ToTable("Identities");
                 identities.HasKey(p => p.idnId);
@@ -105,6 +106,6 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
         public DbSet<type> Types { get; set; }
         public DbSet<brandType> BrandTypes { get; set; }
         public DbSet<fuel> Fuels { get; set; }
-        public DbSet<Identity> Identities { get; set; }
+        public DbSet<identity> Identities { get; set; }
     }
 }

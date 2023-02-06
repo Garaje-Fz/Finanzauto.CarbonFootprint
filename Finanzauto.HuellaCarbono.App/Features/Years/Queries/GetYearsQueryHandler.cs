@@ -40,6 +40,10 @@ namespace Finanzauto.HuellaCarbono.App.Features.Years.Queries
                     });
                 }
             }
+            result.Sort(delegate(YearVM a, YearVM b)
+            {
+                return a.linYear.CompareTo(b.linYear);
+            });
             return _mapper.Map<List<YearVM>>(result);
         }
     }

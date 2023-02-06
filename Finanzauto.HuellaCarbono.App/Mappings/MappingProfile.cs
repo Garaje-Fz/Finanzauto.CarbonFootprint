@@ -16,6 +16,8 @@ namespace Finanzauto.HuellaCarbono.App.Mappings
             CreateMap<brand, BrandVM>();
             CreateMap<type, TypeVM>();
             CreateMap<brandType, TypeVM>();
+            CreateMap<type, TypeVM>();
+            CreateMap<fuel, FuelVM>();
         }
     }
 }
