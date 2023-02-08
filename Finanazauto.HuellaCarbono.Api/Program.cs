@@ -3,7 +3,6 @@ using Finanzauto.HuellaCarbono.App;
 using Finanzauto.HuellaCarbono.Api.Configuration;
 using System.Text;
 using Finanzauto.HuellaCarbono.Auth;
-using Microsoft.AspNetCore.Authentication.Certificate;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,9 +30,6 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
-builder.Services.AddAuthentication(
-    CertificateAuthenticationDefaults.AuthenticationScheme)
-    .AddCertificate();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationService(builder.Configuration);

@@ -1,6 +1,5 @@
 ﻿using Finanzauto.HuellaCarbono.App.Contracts.Persistence;
 using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate;
-using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate.Equivalences;
 using Finanzauto.HuellaCarbono.Domain;
 using MediatR;
 using Microsoft.Extensions.Configuration;

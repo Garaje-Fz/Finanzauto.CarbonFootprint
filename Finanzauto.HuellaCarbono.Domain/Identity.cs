@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Finanzauto.HuellaCarbono.Domain
 {
-    public class Identity : Ordering
+    public class identity : Ordering
     {
         public int idnId { get; set; }
-        public string idnName { get; set; }
         public string idnDescription { get; set; }
         public string idnImage { get; set; }
         public double idnEquivalence { get; set; }

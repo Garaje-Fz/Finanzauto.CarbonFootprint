@@ -62,7 +62,7 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
         }
 
         [HttpPost("Info")]
-        public async Task<ActionResult<Tuple<ResponseVM, AveragueVM>>> GetInfo([FromBody]GetInfoCalculate command)
+        public async Task<ActionResult<Tuple<ResponseVM, ResponseVM>>> GetInfo([FromBody]GetInfoCalculate command)
         {
             var response = await _mediator.Send(command);
             if (command.Kilometraje > 0)

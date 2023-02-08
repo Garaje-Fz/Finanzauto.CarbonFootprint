@@ -22,84 +22,6 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Finanzauto.HuellaCarbono.Domain.Identity", b =>
-                {
-                    b.Property<int>("idnId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idnId"));
-
-                    b.Property<string>("idnDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("idnEquivalence")
-                        .HasColumnType("float");
-
-                    b.Property<string>("idnImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("idnName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("idnOrden")
-                        .HasColumnType("int");
-
-                    b.HasKey("idnId");
-
-                    b.ToTable("Identities", "hhcc");
-
-                    b.HasData(
-                        new
-                        {
-                            idnId = 1,
-                            idnDescription = "Compensado con la siembra de 15 plántulas (árboles jóvenes) asumiendo una esperanza de vida de 10 años.",
-                            idnEquivalence = 15.0,
-                            idnImage = "Arboles",
-                            idnName = "Compensacion en arboles.",
-                            idnOrden = 1
-                        },
-                        new
-                        {
-                            idnId = 2,
-                            idnDescription = "Cargar 110352 teléfonos celulares inteligentes.",
-                            idnEquivalence = 110352.0,
-                            idnImage = "Celulares.",
-                            idnName = "Consumo cargar celulares.",
-                            idnOrden = 2
-                        },
-                        new
-                        {
-                            idnId = 3,
-                            idnDescription = "Realizar 9 viajes de Bogotá a San Andrés en avión..",
-                            idnEquivalence = 9.0,
-                            idnImage = "Viajes.",
-                            idnName = "Consumo viajes a San Andres.",
-                            idnOrden = 3
-                        },
-                        new
-                        {
-                            idnId = 4,
-                            idnDescription = "Mantener encendido 4,5 computadores durante 5 días a la semana, 9 horas al día, durante un año.",
-                            idnEquivalence = 4.5,
-                            idnImage = "Computadores",
-                            idnName = "Consumo en computadores.",
-                            idnOrden = 4
-                        },
-                        new
-                        {
-                            idnId = 5,
-                            idnDescription = "Producir 3,39 kg de carne de vaca.",
-                            idnEquivalence = 3.3900000000000001,
-                            idnImage = "Carne",
-                            idnName = "Consumo en carne.",
-                            idnOrden = 5
-                        });
-                });
-
             modelBuilder.Entity("Finanzauto.HuellaCarbono.Domain.brand", b =>
                 {
                     b.Property<int>("brnId")
@@ -157,6 +79,75 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                     b.ToTable("Fuels", "hhcc");
                 });
 
+            modelBuilder.Entity("Finanzauto.HuellaCarbono.Domain.identity", b =>
+                {
+                    b.Property<int>("idnId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idnId"));
+
+                    b.Property<string>("idnDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("idnEquivalence")
+                        .HasColumnType("float");
+
+                    b.Property<string>("idnImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("idnOrden")
+                        .HasColumnType("int");
+
+                    b.HasKey("idnId");
+
+                    b.ToTable("Identities", "hhcc");
+
+                    b.HasData(
+                        new
+                        {
+                            idnId = 1,
+                            idnDescription = "La huella de carbono por el uso de tu vehiculo lograría ser compensado con la siembra de @equivalence plántulas (árboles jóvenes) con una esperanza de vida de 10 años.",
+                            idnEquivalence = 15.0,
+                            idnImage = "Arboles.png",
+                            idnOrden = 1
+                        },
+                        new
+                        {
+                            idnId = 2,
+                            idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a cargar @equivalence teléfonos celulares inteligentes.",
+                            idnEquivalence = 110352.0,
+                            idnImage = "Celulares.png",
+                            idnOrden = 2
+                        },
+                        new
+                        {
+                            idnId = 3,
+                            idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a realizar aproximadamente @equivalence viajes de Bogotá a San Andrés en avión.",
+                            idnEquivalence = 9.0,
+                            idnImage = "Viajes.png",
+                            idnOrden = 3
+                        },
+                        new
+                        {
+                            idnId = 4,
+                            idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a mantener encendido aproximadamente @equivalence computadores durante 5 días a la semana, 9 horas al día, durante un año.",
+                            idnEquivalence = 4.5,
+                            idnImage = "Computadores.png",
+                            idnOrden = 4
+                        },
+                        new
+                        {
+                            idnId = 5,
+                            idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a producir @equivalence kg de carne de vaca.",
+                            idnEquivalence = 3.3900000000000001,
+                            idnImage = "Carne.png",
+                            idnOrden = 5
+                        });
+                });
+
             modelBuilder.Entity("Finanzauto.HuellaCarbono.Domain.line", b =>
                 {
                     b.Property<int>("linId")
@@ -211,6 +202,9 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("typId"));
+
+                    b.Property<int>("averague")
+                        .HasColumnType("int");
 
                     b.Property<string>("typName")
                         .IsRequired()

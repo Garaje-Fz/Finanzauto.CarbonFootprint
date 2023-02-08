@@ -10,7 +10,7 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
 {
     [ApiController]
     [Route("Login")]
-    public class LoginController : Controller
+    public class LoginController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
@@ -27,11 +27,6 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
             Login login = new Login(_mediator, _unitOfWork);
             var token = login.Token(user);
             return Ok();
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
     }
 }

@@ -23,45 +23,40 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
             InitIdentities.Add(new identity
             {
                 idnId = 1,
-                idnName = "Compensacion en arboles.",
-                idnDescription = "Compensado con la siembra de 15 plántulas (árboles jóvenes) asumiendo una esperanza de vida de 10 años.",
-                idnImage = "Arboles",
+                idnDescription = "La huella de carbono por el uso de tu vehiculo lograría ser compensado con la siembra de @equivalence plántulas (árboles jóvenes) con una esperanza de vida de 10 años.",
+                idnImage = "Arboles.png",
                 idnEquivalence = 15,
                 idnOrden = 1
             });
             InitIdentities.Add(new identity
             {
                 idnId = 2,
-                idnName = "Consumo cargar celulares.",
-                idnDescription = "Cargar 110352 teléfonos celulares inteligentes.",
-                idnImage = "Celulares.",
+                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a cargar @equivalence teléfonos celulares inteligentes.",
+                idnImage = "Celulares.png",
                 idnEquivalence = 110352,
                 idnOrden = 2
             });
             InitIdentities.Add(new identity
             {
                 idnId = 3,
-                idnName = "Consumo viajes a San Andres.",
-                idnDescription = "Realizar 9 viajes de Bogotá a San Andrés en avión..",
-                idnImage = "Viajes.",
+                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a realizar aproximadamente @equivalence viajes de Bogotá a San Andrés en avión.",
+                idnImage = "Viajes.png",
                 idnEquivalence = 9,
                 idnOrden = 3
             });
             InitIdentities.Add(new identity
             {
                 idnId = 4,
-                idnName = "Consumo en computadores.",
-                idnDescription = "Mantener encendido 4,5 computadores durante 5 días a la semana, 9 horas al día, durante un año.",
-                idnImage = "Computadores",
+                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a mantener encendido aproximadamente @equivalence computadores durante 5 días a la semana, 9 horas al día, durante un año.",
+                idnImage = "Computadores.png",
                 idnEquivalence = 4.5,
                 idnOrden = 4
             });
             InitIdentities.Add(new identity
             {
                 idnId = 5,
-                idnName = "Consumo en carne.",
-                idnDescription = "Producir 3,39 kg de carne de vaca.",
-                idnImage = "Carne",
+                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a producir @equivalence kg de carne de vaca.",
+                idnImage = "Carne.png",
                 idnEquivalence = 3.39,
                 idnOrden = 5
             });
