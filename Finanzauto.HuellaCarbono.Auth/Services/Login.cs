@@ -3,10 +3,14 @@ using Finanzauto.HuellaCarbono.Auth.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,17 +28,41 @@ namespace Finanzauto.HuellaCarbono.Auth.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Tokens>> Token(User user)
+        public async Task<Tuple<Tokens, ExceptVM>> Token(User user)
+        {
+            var token = new Tokens();
+            var except = new ExceptVM();
+
+            var auth = ServiceLogin(user);
+            if (auth == "0")
+            {
+                var getToken = GenerateToken();
+            }
+            return new Tuple<Tokens, ExceptVM>(token, except);
+        }
+
+        public string GenerateToken(string usrDomain)
         {
             try
             {
-                var auth = ServiceLogin(user);
-                return new List<Tokens>();
-            }
-            catch (Exception)
-            {
+                var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
 
-                throw;
+                var claimsIdentity = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, usrDomain),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+
+                var tokenDescriptor = new SecurityTokenDescriptor();
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var jwtToken = tokenHandler.WriteToken(token);
+
+                return jwtToken;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al Crear/Generar el token.", ex);
             }
         }
 
@@ -57,7 +85,8 @@ namespace Finanzauto.HuellaCarbono.Auth.Services
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 RestResponse response = client.Execute(request);
-                return response.Content;
+                dynamic data = JsonConvert.DeserializeObject(response.Content);
+                return data.Mensaje.CodigoMensaje.ToString();
             }
             catch (Exception ex)
             {

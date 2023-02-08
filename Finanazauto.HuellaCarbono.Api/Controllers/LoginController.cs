@@ -26,7 +26,7 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
         {
             Login login = new Login(_mediator, _unitOfWork);
             var token = login.Token(user);
-            return Ok();
+            return Ok(token);
         }
     }
 }
