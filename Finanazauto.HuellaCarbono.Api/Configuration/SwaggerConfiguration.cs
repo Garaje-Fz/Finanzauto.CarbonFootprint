@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 namespace Finanzauto.HuellaCarbono.Api.Configuration
 {
@@ -8,28 +9,28 @@ namespace Finanzauto.HuellaCarbono.Api.Configuration
         {
             services.AddSwaggerGen(options =>
             {
-                //var jwtSecurityScheme = new OpenApiSecurityScheme
-                //{
-                //    Scheme = "bearer",
-                //    BearerFormat = "JWT",
-                //    Name = "JWT Authentication",
-                //    In = ParameterLocation.Header,
-                //    Type = SecuritySchemeType.Http,
-                //    Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "JWT Authentication",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
 
-                //    Reference = new OpenApiReference
-                //    {
-                //        Id = JwtBearerDefaults.AuthenticationScheme,
-                //        Type = ReferenceType.SecurityScheme
-                //    }
-                //};
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
 
-                //options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+                options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
-                //options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                //{
-                //    { jwtSecurityScheme, Array.Empty<string>() }
-                //});
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { jwtSecurityScheme, Array.Empty<string>() }
+                });
 
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {

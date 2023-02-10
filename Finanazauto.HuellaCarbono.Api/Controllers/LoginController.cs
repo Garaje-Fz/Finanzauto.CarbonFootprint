@@ -12,11 +12,13 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
     [Route("Login")]
     public class LoginController : ControllerBase
     {
+        IConfiguration _configuration;
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LoginController(IMediator mediator, IUnitOfWork unitOfWork)
+        public LoginController(IConfiguration configuration, IMediator mediator, IUnitOfWork unitOfWork)
         {
+            _configuration = configuration;
             _mediator = mediator;
             _unitOfWork = unitOfWork;
         }
@@ -24,9 +26,12 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
         [HttpPost("Token")]
         public async Task<ActionResult> Token([FromBody]User user)
         {
-            Login login = new Login(_mediator, _unitOfWork);
+            Login login = new Login(_configuration, _mediator, _unitOfWork);
             var token = login.Token(user);
-            return Ok(token);
+            if (token.Result.Item2 == null)
+                return Ok(token.Result.Item1);
+            return Ok(token.Result.Item2);
+
         }
     }
 }

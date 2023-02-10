@@ -22,48 +22,80 @@ namespace Finanzauto.HuellaCarbono.Auth.Services
         private readonly IMediator _meediator;
         private readonly IUnitOfWork _unitOfWork;
 
-        public Login(IMediator meediator, IUnitOfWork unitOfWork)
+        public Login(IConfiguration configuration, IMediator meediator, IUnitOfWork unitOfWork)
         {
+            _configuration = configuration;
             _meediator = meediator;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<Tuple<Tokens, ExceptVM>> Token(User user)
         {
-            var token = new Tokens();
-            var except = new ExceptVM();
-
-            var auth = ServiceLogin(user);
-            if (auth == "0")
-            {
-                var getToken = GenerateToken();
-            }
-            return new Tuple<Tokens, ExceptVM>(token, except);
-        }
-
-        public string GenerateToken(string usrDomain)
-        {
             try
             {
-                var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
-
-                var claimsIdentity = new[]
+                var auth = ServiceLogin(user);
+                var except = new ExceptVM();
+                if (auth == "0")
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, usrDomain),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    var getToken = GenerateToken(user.UserName);
+                    if (getToken != null)
+                    {
+                        return new Tuple<Tokens, ExceptVM>(getToken, null);
+                    }
+                    except = new ExceptVM()
+                    {
+                        result = "Error de generacion del token.",
+                        except = "null",
+                    };
+                    return new Tuple<Tokens, ExceptVM>(null, except);
+                }
+                except = new ExceptVM()
+                {
+                    result = "Error de autenticacion.",
+                    except = "null",
                 };
-
-                var tokenDescriptor = new SecurityTokenDescriptor();
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var jwtToken = tokenHandler.WriteToken(token);
-
-                return jwtToken;
+                return new Tuple<Tokens, ExceptVM>(null, except);
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al Crear/Generar el token.", ex);
+                var except = new ExceptVM()
+                {
+                    result = "Error consumo Token",
+                    except = $"Excepcion no controlada {ex}"
+                };
+                return new Tuple<Tokens, ExceptVM>(null, except);
             }
+        }
+
+        public Tokens GenerateToken(string usrDomain)
+        {
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]));
+            var issuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audience"];
+            var EndToken = int.Parse(_configuration["Jwt:EndToken"]);
+            var claimsIdentity = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, usrDomain),
+                new Claim(JwtRegisteredClaimNames.Iss, issuer),
+                new Claim(JwtRegisteredClaimNames.Aud, audience),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claimsIdentity),
+                Expires = DateTime.UtcNow.AddHours(EndToken),
+                SigningCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var jwtToken = tokenHandler.WriteToken(token);
+            var response = new Tokens()
+            {
+                usrDomainName = usrDomain,
+                tknId = token.Id,
+                token = jwtToken,
+            };
+            return response;
         }
 
         public string ServiceLogin(User user)

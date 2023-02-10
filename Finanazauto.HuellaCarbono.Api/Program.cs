@@ -52,6 +52,8 @@ app.UseAuthorization();
 IConfiguration configuration = app.Configuration;
 IWebHostEnvironment environment = app.Environment;
 
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

@@ -11,11 +11,13 @@ using Azure;
 using Finanzauto.HuellaCarbono.App.Features.Logic.Calculator;
 using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate;
 using Finanzauto.HuellaCarbono.App.Features.Fuels.Queries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Finanzauto.HuellaCarbono.Api.Controllers
 {
     [ApiController]
     [Route("Get")]
+    [Authorize]
     public class HuellaCarbonoController : ControllerBase
     {
         private readonly IMediator _mediator;
