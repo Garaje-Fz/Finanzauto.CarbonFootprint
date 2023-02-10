@@ -33,9 +33,8 @@ namespace Finanzauto.HuellaCarbono.Auth.Services
         {
             try
             {
-                var auth = ServiceLogin(user);
                 var except = new ExceptVM();
-                if (auth == "0")
+                if ((_configuration["Jwt:Issuer"] == user.UserName) && (_configuration["Jwt:Audience"] == user.Password))
                 {
                     var getToken = GenerateToken(user.UserName);
                     if (getToken != null)
@@ -96,34 +95,6 @@ namespace Finanzauto.HuellaCarbono.Auth.Services
                 token = jwtToken,
             };
             return response;
-        }
-
-        public string ServiceLogin(User user)
-        {
-            try
-            {
-                string api = _configuration["Apis:Finanzauto"];
-                var client = new RestClient(api);
-                RestRequest request = new RestRequest("", Method.Post);
-                String body = @"{
-                " + "\n" + @"  ""User"": ""@username"",
-                " + "\n" + @"  ""Passwd"": ""@password"",
-                " + "\n" + @"  ""IdAplicativo"": 3,
-                " + "\n" + @"  ""Firma"": ""KdNESJeIadQ+U+Q5Qs+8BQ==""
-                " + "\n" +
-                @"}";
-                body = body.Replace("@username", user.UserName);
-                body = body.Replace("@password", user.Password);
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("application/json", body, ParameterType.RequestBody);
-                RestResponse response = client.Execute(request);
-                dynamic data = JsonConvert.DeserializeObject(response.Content);
-                return data.Mensaje.CodigoMensaje.ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error respuesta Login Finanzauto.", ex);
-            }
         }
     }
 }
