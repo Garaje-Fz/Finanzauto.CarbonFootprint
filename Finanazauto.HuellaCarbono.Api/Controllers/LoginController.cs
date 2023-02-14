@@ -2,6 +2,7 @@
 using Finanzauto.HuellaCarbono.Auth.Models;
 using Finanzauto.HuellaCarbono.Auth.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +32,6 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
             if (token.Result.Item2 == null)
                 return Ok(token.Result.Item1);
             return Ok(token.Result.Item2);
-
         }
     }
 }

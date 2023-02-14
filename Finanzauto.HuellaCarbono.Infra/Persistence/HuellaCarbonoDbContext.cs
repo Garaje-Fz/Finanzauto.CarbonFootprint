@@ -60,6 +60,20 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 idnEquivalence = 3.39,
                 idnOrden = 5
             });
+
+            List<user> InitUsers = new List<user>();
+            InitUsers.Add(new user
+            {
+                Id = 1,
+                usrName = "Finanzauto",
+                usrLastName = "S.A.",
+                usrUserName = "DevNovedades",
+                usrEmail = "elgaraje@finanzauto.com.co",
+                usrPassword = "NewEfRiB.#23",
+                State = true,
+                DateCreate = DateTime.Now,
+                DateUpdate = DateTime.Now
+            });
             #endregion
 
             modelBuilder.HasDefaultSchema("hhcc");
@@ -94,6 +108,12 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 identities.HasKey(p => p.idnId);
                 identities.HasData(InitIdentities);
             });
+            modelBuilder.Entity<user>(users =>
+            {
+                users.ToTable("Users");
+                users.HasKey(p => p.Id);
+                users.HasData(InitUsers);
+            });
         }
 
         public DbSet<brand> Brands { get; set; }
@@ -102,5 +122,6 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
         public DbSet<brandType> BrandTypes { get; set; }
         public DbSet<fuel> Fuels { get; set; }
         public DbSet<identity> Identities { get; set; }
+        public DbSet<user> Users { get; set; }
     }
 }

@@ -29,15 +29,22 @@ namespace Finanzauto.HuellaCarbono.App.Features.Lines.Queries
         {
             var lines = await _unitOfWork.Repository<line>()
                 .GetAsync(x => x.brnId == request.brnId && x.typId == request.typId && x.linYear == request.linYear);
+            List<LineVM> list = new List<LineVM>();
             List<LineVM> result = new List<LineVM>();
             for (int i = 0; i <= lines.Count - 1; i++)
             {
-                result.Add(new LineVM()
+                list.Add(new LineVM()
                 {
                     linId = lines[i].linId,
                     linDescription = lines[i].linDescription
                 });
             }
+            var order = from s in list
+                        orderby s.linDescription
+                        select s;
+            foreach (var item in order)
+                result.Add(item);
+
             return _mapper.Map<List<LineVM>>(result);
         }
     }

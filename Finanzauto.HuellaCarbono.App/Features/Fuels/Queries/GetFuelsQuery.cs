@@ -10,8 +10,6 @@ namespace Finanzauto.HuellaCarbono.App.Features.Fuels.Queries
 {
     public class GetFuelsQuery : IRequest<List<FuelVM>>
     {
-        public int brnId { get; set; }
-        public int typId { get; set; }
-        public int linYear { get; set; }
+        public int linId { get; set; }
     }
 }

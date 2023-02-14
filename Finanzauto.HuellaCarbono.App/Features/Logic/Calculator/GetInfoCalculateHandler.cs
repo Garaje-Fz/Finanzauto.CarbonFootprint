@@ -43,10 +43,10 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                 if (request.Kilometraje > 0)
                 {
                     double emisionesGrKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].EmisionesCO2_GrKm), 3, MidpointRounding.ToEven);
-                    double emisionesTnKm = Math.Round((request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm)), 3, MidpointRounding.ToEven);
+                    double emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
                     for (int i = 0; i < ident.Count; i++)
                     {
-                        calc = Math.Round(emisionesTnKm * ident[i].idnEquivalence, 3, MidpointRounding.ToEven);
+                        calc = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm) * ident[i].idnEquivalence, 3, MidpointRounding.ToEven);
                         equivalences[i] = new EquivalenceVM()
                         {
                             Order = ident[i].idnOrden,
@@ -70,7 +70,7 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                     double emisionesTnKm = Math.Round(anio * averages[0].averague * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
                     for (int i = 0; i < ident.Count; i++)
                     {
-                        calc = Math.Round(emisionesTnKm * ident[i].idnEquivalence, 3, MidpointRounding.ToEven);
+                        calc = Math.Round((anio * averages[0].averague * ident[i].idnEquivalence), 3, MidpointRounding.ToEven);
                         equivalences[i] = new EquivalenceVM()
                         {
                             Calculate = calc,

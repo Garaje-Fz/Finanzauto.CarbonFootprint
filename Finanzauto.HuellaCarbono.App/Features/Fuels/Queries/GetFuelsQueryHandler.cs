@@ -27,22 +27,14 @@ namespace Finanzauto.HuellaCarbono.App.Features.Fuels.Queries
 
         public async Task<List<FuelVM>> Handle(GetFuelsQuery request, CancellationToken cancellationToken)
         {
-            var lines = await _unitOfWork.Repository<line>()
-                .GetAsync(x => x.brnId == request.brnId && x.typId == request.typId && x.linYear == request.linYear);
+            var lines = await _unitOfWork.Repository<line>().GetAsync(x => x.linId == request.linId);
+            var fuels = await _unitOfWork.Repository<fuel>().GetAsync(x => x.fueId == lines[0].fueId);
             List<FuelVM> result = new List<FuelVM>();
-            for (int i = 0; i < lines.Count - 1; i++)
+            result.Add(new FuelVM()
             {
-                var fuels = await _unitOfWork.Repository<fuel>().GetAsync(x => x.fueId == lines[i].fueId);
-                var year = result.Find(x => x.fueId == lines[i].fueId);
-                if (year == null)
-                {
-                    result.Add(new FuelVM()
-                    {
-                        fueId= lines[i].fueId,
-                        fueName = fuels[0].fueName
-                    });
-                }
-            }
+                fueId = lines[0].fueId,
+                fueName = fuels[0].fueName
+            });
             return _mapper.Map<List<FuelVM>>(result);
         }
     }

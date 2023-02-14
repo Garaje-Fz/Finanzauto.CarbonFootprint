@@ -3,6 +3,7 @@ using Finanzauto.HuellaCarbono.App;
 using Finanzauto.HuellaCarbono.Api.Configuration;
 using System.Text;
 using Finanzauto.HuellaCarbono.Auth;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,13 @@ builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.AddAuthServices(builder.Configuration);
 
 var app = builder.Build();
+
+var cultureInfo = new CultureInfo("es-CO");
+cultureInfo.NumberFormat.CurrencySymbol = "$";
+cultureInfo.NumberFormat.NumberDecimalSeparator = ",";
+cultureInfo.NumberFormat.NumberGroupSeparator = ",";
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 app.UseCors("PolicyCors");
 app.UseSwagger();

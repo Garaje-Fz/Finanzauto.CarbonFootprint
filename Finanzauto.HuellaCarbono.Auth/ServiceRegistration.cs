@@ -1,7 +1,9 @@
 ﻿using Finanzauto.HuellaCarbono.App.Contracts.Auth;
+using Finanzauto.HuellaCarbono.App.Contracts.Persistence;
 using Finanzauto.HuellaCarbono.Auth.Handlers;
 using Finanzauto.HuellaCarbono.Auth.Models;
 using Finanzauto.HuellaCarbono.Auth.Services;
+using Finanzauto.HuellaCarbono.Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
