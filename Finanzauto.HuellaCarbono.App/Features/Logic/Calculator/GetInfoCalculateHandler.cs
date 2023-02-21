@@ -42,7 +42,7 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
 
                 if (request.Kilometraje > 0)
                 {
-                    double emisionesGrKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].EmisionesCO2_GrKm), 3, MidpointRounding.ToEven);
+                    double emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
                     double emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
                     for (int i = 0; i < ident.Count; i++)
                     {
@@ -66,7 +66,7 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                 else
                 {
                     var anio = Convert.ToInt32(DateTime.Today.Year.ToString("D")) - line[0].linYear;
-                    double emisionesGrKm = Math.Round(anio * averages[0].averague * Convert.ToDouble(line[0].EmisionesCO2_GrKm), 3, MidpointRounding.ToEven);
+                    double emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
                     double emisionesTnKm = Math.Round(anio * averages[0].averague * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
                     for (int i = 0; i < ident.Count; i++)
                     {

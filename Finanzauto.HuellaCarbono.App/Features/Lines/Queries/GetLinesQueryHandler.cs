@@ -28,16 +28,20 @@ namespace Finanzauto.HuellaCarbono.App.Features.Lines.Queries
         public async Task<List<LineVM>> Handle(GetLinesQuery request, CancellationToken cancellationToken)
         {
             var lines = await _unitOfWork.Repository<line>()
-                .GetAsync(x => x.brnId == request.brnId && x.typId == request.typId && x.linYear == request.linYear);
+                .GetAsync(x => x.brnId == request.brnId && x.typId == request.typId);
             List<LineVM> list = new List<LineVM>();
             List<LineVM> result = new List<LineVM>();
             for (int i = 0; i <= lines.Count - 1; i++)
             {
-                list.Add(new LineVM()
+                var validation = list.Find(x => x.linDescription == lines[i].linDescription);
+                if (validation == null)
                 {
-                    linId = lines[i].linId,
-                    linDescription = lines[i].linDescription
-                });
+                    list.Add(new LineVM()
+                    {
+                        linId = lines[i].linId,
+                        linDescription = lines[i].linDescription
+                    });
+                }
             }
             var order = from s in list
                         orderby s.linDescription

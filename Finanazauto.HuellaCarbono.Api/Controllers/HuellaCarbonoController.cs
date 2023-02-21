@@ -17,7 +17,7 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
 {
     [ApiController]
     [Route("Get")]
-    [Authorize]
+    
     public class HuellaCarbonoController : ControllerBase
     {
         private readonly IMediator _mediator;

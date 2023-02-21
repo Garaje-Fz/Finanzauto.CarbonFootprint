@@ -14,6 +14,5 @@ namespace Finanzauto.HuellaCarbono.App.Features.Lines.Queries
     {
         public int brnId { get; set; }
         public int typId { get; set; }
-        public int linYear { get; set; }
     }
 }
