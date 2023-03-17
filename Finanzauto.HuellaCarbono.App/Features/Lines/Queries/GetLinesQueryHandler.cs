@@ -39,7 +39,8 @@ namespace Finanzauto.HuellaCarbono.App.Features.Lines.Queries
                     list.Add(new LineVM()
                     {
                         linId = lines[i].linId,
-                        linDescription = lines[i].linDescription
+                        linDescription = lines[i].linDescription,
+                        codigoFasecolda = lines[i].codigoFasecolda
                     });
                 }
             }

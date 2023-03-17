@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Finanzauto.HuellaCarbono.Domain
@@ -30,5 +31,8 @@ namespace Finanzauto.HuellaCarbono.Domain
         public string linDescription { get; set; }
         public string EmisionesCO2_GrKm { get; set; }
         public string huellaCarbono_TonKm { get; set; }
+
+        [JsonIgnore]
+        public List<record> GetRecords { get; set; }
     }
 }

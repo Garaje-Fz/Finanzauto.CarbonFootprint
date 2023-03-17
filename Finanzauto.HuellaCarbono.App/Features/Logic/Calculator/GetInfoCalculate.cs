@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
 {
-    public class GetInfoCalculate : IRequest<Tuple<List<ResponseVM>, List<ResponseVM>>>
+    public class GetInfoCalculate : IRequest<Tuple<List<ResponseVM>, ExceptionVM>>
     {
-        public int Id_Line { get; set; }
+        public string Codigo_Fasecolda { get; set; }
+        public int Anio { get; set; }
         public int Kilometraje { get; set; }
     }
 }

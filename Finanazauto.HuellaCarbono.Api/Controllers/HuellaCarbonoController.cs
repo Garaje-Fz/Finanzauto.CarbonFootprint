@@ -17,7 +17,9 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
 {
     [ApiController]
     [Route("Get")]
-    
+//#if !DEBUG
+//        [Authorize]
+//#endif
     public class HuellaCarbonoController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -67,9 +69,9 @@ namespace Finanzauto.HuellaCarbono.Api.Controllers
         public async Task<ActionResult<Tuple<ResponseVM, ResponseVM>>> GetInfo([FromBody]GetInfoCalculate command)
         {
             var response = await _mediator.Send(command);
-            if (command.Kilometraje > 0)
-                return Ok(response.Item1);
-            return Ok(response.Item2);
+            if (response.Item1 == null)
+                return Ok(response.Item2);
+            return Ok(response.Item1);
         }
     }
 }

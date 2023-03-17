@@ -10,5 +10,6 @@ namespace Finanzauto.HuellaCarbono.App.Models.ViewModel
     {
         public int linId { get; set; }
         public string linDescription { get; set; }
+        public string codigoFasecolda { get; set; }
     }
 }

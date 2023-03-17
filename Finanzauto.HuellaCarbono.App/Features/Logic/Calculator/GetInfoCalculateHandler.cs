@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
 {
-    public class GetInfoCalculateHandler : IRequestHandler<GetInfoCalculate, Tuple<List<ResponseVM>, List<ResponseVM>>>
+    public class GetInfoCalculateHandler : IRequestHandler<GetInfoCalculate, Tuple<List<ResponseVM>, ExceptionVM>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<GetInfoCalculateHandler> _logger;
@@ -28,18 +28,19 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
             _mapper = mapper;
         }
 
-        public async Task<Tuple<List<ResponseVM>, List<ResponseVM>>> Handle(GetInfoCalculate request, CancellationToken cancellationToken)
+        public async Task<Tuple<List<ResponseVM>, ExceptionVM>> Handle(GetInfoCalculate request, CancellationToken cancellationToken)
         {
             try
             {
                 Calculator calculator = new Calculator(_unitOfWork);
                 var responseVM = new List<ResponseVM>();
+                var newRecord = new record();
                 double calc;
-                var line = await _unitOfWork.Repository<line>().GetAsync(x => x.linId == request.Id_Line);
+                var line = await _unitOfWork.Repository<line>().GetAsync(x => x.codigoFasecolda == request.Codigo_Fasecolda && x.linYear == request.Anio);
+                if (line == null) throw new Exception("Digite un año valido");
                 var ident = await _unitOfWork.Repository<identity>().GetAllAsync();
                 var averages = await _unitOfWork.Repository<type>().GetAsync(x => x.typId == line[0].typId);
                 EquivalenceVM[] equivalences = new EquivalenceVM[ident.Count];
-
                 if (request.Kilometraje > 0)
                 {
                     double emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
@@ -62,6 +63,15 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                         EmissionsTn_Km = emisionesTnKm,
                         equivalence = order
                     });
+                    newRecord = new record()
+                    {
+                        linId = line[0].linId,
+                        recKm = request.Kilometraje,
+                        recEmisionGrKm = emisionesGrKm,
+                        recCalculateTnKm = emisionesTnKm,
+                        recEmisionTnKm = Convert.ToDouble(line[0].huellaCarbono_TonKm),
+                        recCreateDate = DateTime.Now
+                    };
                 }
                 else
                 {
@@ -85,12 +95,41 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                         EmissionsTn_Km = emisionesTnKm,
                         equivalence = equivalences
                     });
+                    newRecord = new record()
+                    {
+                        linId = line[0].linId,
+                        recKm = request.Kilometraje,
+                        recEmisionGrKm = emisionesGrKm,
+                        recCalculateTnKm = emisionesTnKm,
+                        recEmisionTnKm = Convert.ToDouble(line[0].huellaCarbono_TonKm),
+                        recCreateDate = DateTime.Now
+                    };
                 }
-                return new Tuple<List<ResponseVM>, List<ResponseVM>>(responseVM, responseVM);
+                await _unitOfWork.Repository<record>().AddAsync(newRecord);
+                return new Tuple<List<ResponseVM>, ExceptionVM>(responseVM, null);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error Equivalencias. {ex}");
+                var line = await _unitOfWork.Repository<line>().GetAsync(x => x.codigoFasecolda == request.Codigo_Fasecolda);
+                List<YearVM> result = new List<YearVM>();
+                for (int i = 0; i <= line.Count - 1; i++)
+                {
+                    result.Add(new YearVM()
+                    {
+                        linYear = line[i].linYear
+                    });   
+                }
+                result.Sort(delegate (YearVM a, YearVM b)
+                {
+                    return a.linYear.CompareTo(b.linYear);
+                });
+                return new Tuple<List<ResponseVM>, ExceptionVM>
+                    (null, (new ExceptionVM()
+                    {
+                        description = "Digite un año valido",
+                        Anios = result
+                    })
+                );
             }
         }
     }

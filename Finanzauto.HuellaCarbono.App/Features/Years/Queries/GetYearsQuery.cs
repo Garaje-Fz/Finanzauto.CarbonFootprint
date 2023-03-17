@@ -10,7 +10,6 @@ namespace Finanzauto.HuellaCarbono.App.Features.Years.Queries
 {
     public class GetYearsQuery : IRequest<List<YearVM>>
     {
-        public int brnId { get; set; }
-        public int typId { get; set; }
+        public string Codigo_Fasecolda { get; set; }
     }
 }

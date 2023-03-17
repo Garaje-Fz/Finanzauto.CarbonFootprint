@@ -27,7 +27,7 @@ namespace Finanzauto.HuellaCarbono.App.Features.Years.Queries
 
         public async Task<List<YearVM>> Handle(GetYearsQuery request, CancellationToken cancellationToken)
         {
-            var lines = await _unitOfWork.Repository<line>().GetAsync(x => x.brnId == request.brnId && x.typId == request.typId);
+            var lines = await _unitOfWork.Repository<line>().GetAsync(x => x.codigoFasecolda == request.Codigo_Fasecolda);
             List<YearVM> result = new List<YearVM>();
             for (int i = 0; i <= lines.Count - 1; i++)
             {
