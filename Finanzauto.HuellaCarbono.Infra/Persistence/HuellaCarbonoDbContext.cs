@@ -114,6 +114,11 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
                 users.HasKey(p => p.Id);
                 users.HasData(InitUsers);
             });
+            modelBuilder.Entity<record>(records =>
+            {
+                records.ToTable("Records");
+                records.HasKey(p => p.recId);
+            });
         }
 
         public DbSet<brand> Brands { get; set; }
@@ -123,5 +128,6 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
         public DbSet<fuel> Fuels { get; set; }
         public DbSet<identity> Identities { get; set; }
         public DbSet<user> Users { get; set; }
+        public DbSet<record> Records { get; set; }
     }
 }
