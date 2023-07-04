@@ -19,47 +19,47 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Datos Iniciales
-            List<identity> InitIdentities = new List<identity>();
-            InitIdentities.Add(new identity
-            {
-                idnId = 1,
-                idnDescription = "La huella de carbono por el uso de tu vehiculo lograría ser compensado con la siembra de @equivalence plántulas (árboles jóvenes) con una esperanza de vida de 10 años.",
-                idnImage = "Arboles.png",
-                idnEquivalence = 15,
-                idnOrden = 1
-            });
-            InitIdentities.Add(new identity
-            {
-                idnId = 2,
-                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a cargar @equivalence teléfonos celulares inteligentes.",
-                idnImage = "Celulares.png",
-                idnEquivalence = 110352,
-                idnOrden = 2
-            });
-            InitIdentities.Add(new identity
-            {
-                idnId = 3,
-                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a realizar aproximadamente @equivalence viajes de Bogotá a San Andrés en avión.",
-                idnImage = "Viajes.png",
-                idnEquivalence = 9,
-                idnOrden = 3
-            });
-            InitIdentities.Add(new identity
-            {
-                idnId = 4,
-                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a mantener encendido aproximadamente @equivalence computadores durante 5 días a la semana, 9 horas al día, durante un año.",
-                idnImage = "Computadores.png",
-                idnEquivalence = 4.5,
-                idnOrden = 4
-            });
-            InitIdentities.Add(new identity
-            {
-                idnId = 5,
-                idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a producir @equivalence kg de carne de vaca.",
-                idnImage = "Carne.png",
-                idnEquivalence = 3.39,
-                idnOrden = 5
-            });
+            //List<identity> InitIdentities = new List<identity>();
+            //InitIdentities.Add(new identity
+            //{
+            //    idnId = 1,
+            //    idnDescription = "La huella de carbono por el uso de tu vehiculo lograría ser compensado con la siembra de @equivalence plántulas (árboles jóvenes) con una esperanza de vida de 10 años.",
+            //    idnImage = "Arboles.png",
+            //    idnEquivalence = 15,
+            //    idnOrden = 1
+            //});
+            //InitIdentities.Add(new identity
+            //{
+            //    idnId = 2,
+            //    idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a cargar @equivalence teléfonos celulares inteligentes.",
+            //    idnImage = "Celulares.png",
+            //    idnEquivalence = 110352,
+            //    idnOrden = 2
+            //});
+            //InitIdentities.Add(new identity
+            //{
+            //    idnId = 3,
+            //    idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a realizar aproximadamente @equivalence viajes de Bogotá a San Andrés en avión.",
+            //    idnImage = "Viajes.png",
+            //    idnEquivalence = 9,
+            //    idnOrden = 3
+            //});
+            //InitIdentities.Add(new identity
+            //{
+            //    idnId = 4,
+            //    idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a mantener encendido aproximadamente @equivalence computadores durante 5 días a la semana, 9 horas al día, durante un año.",
+            //    idnImage = "Computadores.png",
+            //    idnEquivalence = 4.5,
+            //    idnOrden = 4
+            //});
+            //InitIdentities.Add(new identity
+            //{
+            //    idnId = 5,
+            //    idnDescription = "La huella de carbono por el uso de tu vehiculo corresponde a producir @equivalence kg de carne de vaca.",
+            //    idnImage = "Carne.png",
+            //    idnEquivalence = 3.39,
+            //    idnOrden = 5
+            //});
 
             List<user> InitUsers = new List<user>();
             InitUsers.Add(new user
@@ -106,7 +106,6 @@ namespace Finanzauto.HuellaCarbono.Infra.Persistence
             {
                 identities.ToTable("Identities");
                 identities.HasKey(p => p.idnId);
-                identities.HasData(InitIdentities);
             });
             modelBuilder.Entity<user>(users =>
             {

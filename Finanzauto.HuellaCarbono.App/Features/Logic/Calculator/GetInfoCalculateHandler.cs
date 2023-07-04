@@ -32,19 +32,29 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
         {
             try
             {
-                Calculator calculator = new Calculator(_unitOfWork);
                 var responseVM = new List<ResponseVM>();
                 var newRecord = new record();
                 double calc;
                 var line = await _unitOfWork.Repository<line>().GetAsync(x => x.codigoFasecolda == request.Codigo_Fasecolda && x.linYear == request.Anio);
                 if (line == null) throw new Exception("Digite un año valido");
-                var ident = await _unitOfWork.Repository<identity>().GetAllAsync();
+
+                var ident = await _unitOfWork.Repository<identity>().GetAsync(x => x.fueId == line[0].fueId);
                 var averages = await _unitOfWork.Repository<type>().GetAsync(x => x.typId == line[0].typId);
                 EquivalenceVM[] equivalences = new EquivalenceVM[ident.Count];
+                double emisionesGrKm;
+                double emisionesTnKm;
                 if (request.Kilometraje > 0)
                 {
-                    double emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
-                    double emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
+                    if (line[0].fueId == 2)
+                    {
+                        emisionesGrKm = Convert.ToDouble(averages[0].averagueCo2) * 100000;
+                        emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(averages[0].averagueCo2), 3, MidpointRounding.ToEven);
+                    }
+                    else
+                    {
+                        emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
+                        emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
+                    }
                     for (int i = 0; i < ident.Count; i++)
                     {
                         calc = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm) * ident[i].idnEquivalence, 3, MidpointRounding.ToEven);
@@ -75,20 +85,29 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                 }
                 else
                 {
+
                     var anio = Convert.ToInt32(DateTime.Today.Year.ToString("D")) - line[0].linYear;
-                    double emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
-                    double emisionesTnKm = Math.Round(anio * averages[0].averague * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
+                    if (line[0].fueId == 2)
+                    {
+                        emisionesGrKm = Convert.ToDouble(averages[0].averagueCo2) * 100000;
+                        emisionesTnKm = Math.Round(anio * averages[0].averagueKm * Convert.ToDouble(averages[0].averagueCo2), 3, MidpointRounding.ToEven);
+                    }
+                    else
+                    {
+                        emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
+                        emisionesTnKm = Math.Round(anio * averages[0].averagueKm * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
+                    }
                     for (int i = 0; i < ident.Count; i++)
                     {
-                        calc = Math.Round((anio * averages[0].averague * ident[i].idnEquivalence), 3, MidpointRounding.ToEven);
+                        calc = Math.Round((anio * averages[0].averagueKm * ident[i].idnEquivalence), 3, MidpointRounding.ToEven);
                         equivalences[i] = new EquivalenceVM()
                         {
+                            Order = ident[i].idnOrden,
                             Calculate = calc,
                             Description = ident[i].idnDescription,
                             Image = ident[i].idnImage
                         };
                     }
-                    var order = equivalences.OrderBy(x => x.Order).ToArray();
                     responseVM.Add(new ResponseVM()
                     {
                         EmissionsGr_Km = emisionesGrKm,

@@ -1,5 +1,6 @@
 ﻿using Finanzauto.HuellaCarbono.App.Contracts.Persistence;
 using Finanzauto.HuellaCarbono.App.Models.ViewModel.Calculate;
+using Finanzauto.HuellaCarbono.Application.Exceptions;
 using Finanzauto.HuellaCarbono.Domain;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +26,7 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al calcular equivalencia" + ex);
+                throw new BadRequestException(ex.Message);
             }
         }
     }

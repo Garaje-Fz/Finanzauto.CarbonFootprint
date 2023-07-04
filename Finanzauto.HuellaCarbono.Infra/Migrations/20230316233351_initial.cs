@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,7 +8,7 @@
 namespace Finanzauto.HuellaCarbono.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,7 +51,6 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                 {
                     idnId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    idnName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     idnDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     idnImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     idnEquivalence = table.Column<double>(type: "float", nullable: false),
@@ -68,11 +68,33 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                 {
                     typId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    typName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    typName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    averague = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Types", x => x.typId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "hhcc",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    usrName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    usrLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    usrUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    usrEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    usrPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    State = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,18 +168,50 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Records",
+                schema: "hhcc",
+                columns: table => new
+                {
+                    recId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    linId = table.Column<int>(type: "int", nullable: false),
+                    recKm = table.Column<int>(type: "int", nullable: false),
+                    recEmisionGrKm = table.Column<double>(type: "float", nullable: false),
+                    recEmisionTnKm = table.Column<double>(type: "float", nullable: false),
+                    recCalculateTnKm = table.Column<double>(type: "float", nullable: false),
+                    recCreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Records", x => x.recId);
+                    table.ForeignKey(
+                        name: "FK_Records_Lines_linId",
+                        column: x => x.linId,
+                        principalSchema: "hhcc",
+                        principalTable: "Lines",
+                        principalColumn: "linId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 schema: "hhcc",
                 table: "Identities",
-                columns: new[] { "idnId", "idnDescription", "idnEquivalence", "idnImage", "idnName", "idnOrden" },
+                columns: new[] { "idnId", "idnDescription", "idnEquivalence", "idnImage", "idnOrden" },
                 values: new object[,]
                 {
-                    { 1, "Compensado con la siembra de 15 plántulas (árboles jóvenes) asumiendo una esperanza de vida de 10 años.", 15.0, "Arboles", "Compensacion en arboles.", 1 },
-                    { 2, "Cargar 110352 teléfonos celulares inteligentes.", 110352.0, "Celulares.", "Consumo cargar celulares.", 2 },
-                    { 3, "Realizar 9 viajes de Bogotá a San Andrés en avión..", 9.0, "Viajes.", "Consumo viajes a San Andres.", 3 },
-                    { 4, "Mantener encendido 4,5 computadores durante 5 días a la semana, 9 horas al día, durante un año.", 4.5, "Computadores", "Consumo en computadores.", 4 },
-                    { 5, "Producir 3,39 kg de carne de vaca.", 3.3900000000000001, "Carne", "Consumo en carne.", 5 }
+                    { 1, "La huella de carbono por el uso de tu vehiculo lograría ser compensado con la siembra de @equivalence plántulas (árboles jóvenes) con una esperanza de vida de 10 años.", 15.0, "Arboles.png", 1 },
+                    { 2, "La huella de carbono por el uso de tu vehiculo corresponde a cargar @equivalence teléfonos celulares inteligentes.", 110352.0, "Celulares.png", 2 },
+                    { 3, "La huella de carbono por el uso de tu vehiculo corresponde a realizar aproximadamente @equivalence viajes de Bogotá a San Andrés en avión.", 9.0, "Viajes.png", 3 },
+                    { 4, "La huella de carbono por el uso de tu vehiculo corresponde a mantener encendido aproximadamente @equivalence computadores durante 5 días a la semana, 9 horas al día, durante un año.", 4.5, "Computadores.png", 4 },
+                    { 5, "La huella de carbono por el uso de tu vehiculo corresponde a producir @equivalence kg de carne de vaca.", 3.3900000000000001, "Carne.png", 5 }
                 });
+
+            migrationBuilder.InsertData(
+                schema: "hhcc",
+                table: "Users",
+                columns: new[] { "Id", "DateCreate", "DateUpdate", "State", "usrEmail", "usrLastName", "usrName", "usrPassword", "usrUserName" },
+                values: new object[] { 1, new DateTime(2023, 3, 16, 18, 33, 51, 416, DateTimeKind.Local).AddTicks(6329), new DateTime(2023, 3, 16, 18, 33, 51, 416, DateTimeKind.Local).AddTicks(6340), true, "elgaraje@finanzauto.com.co", "S.A.", "Finanzauto", "NewEfRiB.#23", "DevNovedades" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BrandTypes_brnId",
@@ -188,6 +242,12 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                 schema: "hhcc",
                 table: "Lines",
                 column: "typId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Records_linId",
+                schema: "hhcc",
+                table: "Records",
+                column: "linId");
         }
 
         /// <inheritdoc />
@@ -199,6 +259,14 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
 
             migrationBuilder.DropTable(
                 name: "Identities",
+                schema: "hhcc");
+
+            migrationBuilder.DropTable(
+                name: "Records",
+                schema: "hhcc");
+
+            migrationBuilder.DropTable(
+                name: "Users",
                 schema: "hhcc");
 
             migrationBuilder.DropTable(

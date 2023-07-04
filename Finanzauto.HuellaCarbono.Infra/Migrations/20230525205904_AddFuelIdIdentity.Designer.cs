@@ -4,6 +4,7 @@ using Finanzauto.HuellaCarbono.Infra.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Finanzauto.HuellaCarbono.Infra.Migrations
 {
     [DbContext(typeof(HuellaCarbonoDbContext))]
-    partial class HuellaCarbonoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230525205904_AddFuelIdIdentity")]
+    partial class AddFuelIdIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,11 +203,7 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("typId"));
 
-                    b.Property<string>("averagueCo2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("averagueKm")
+                    b.Property<int>("averague")
                         .HasColumnType("int");
 
                     b.Property<string>("typName")
@@ -261,8 +260,8 @@ namespace Finanzauto.HuellaCarbono.Infra.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreate = new DateTime(2023, 6, 29, 10, 7, 10, 992, DateTimeKind.Local).AddTicks(4450),
-                            DateUpdate = new DateTime(2023, 6, 29, 10, 7, 10, 992, DateTimeKind.Local).AddTicks(4462),
+                            DateCreate = new DateTime(2023, 5, 25, 15, 59, 4, 35, DateTimeKind.Local).AddTicks(7490),
+                            DateUpdate = new DateTime(2023, 5, 25, 15, 59, 4, 35, DateTimeKind.Local).AddTicks(7523),
                             State = true,
                             usrEmail = "elgaraje@finanzauto.com.co",
                             usrLastName = "S.A.",

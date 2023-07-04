@@ -13,7 +13,8 @@ namespace Finanzauto.HuellaCarbono.Domain
     {
         public int typId { get; set; }
         public string typName { get; set; }
-        public int averague { get; set; }
+        public int averagueKm { get; set; }
+        public string averagueCo2 { get; set; }
 
         [JsonIgnore]
         public List<line> GetTypes { get; set; }

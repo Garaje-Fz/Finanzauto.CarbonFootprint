@@ -15,5 +15,8 @@ namespace Finanzauto.HuellaCarbono.Domain
 
         [JsonIgnore]
         public List<line> GetFuel { get; set; }
+
+        [JsonIgnore]
+        public virtual List<identity> GetIdentLogic { get; set; }
     }
 }
