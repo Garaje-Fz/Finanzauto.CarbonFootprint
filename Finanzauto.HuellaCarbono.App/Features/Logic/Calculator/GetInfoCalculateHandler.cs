@@ -43,21 +43,25 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                 EquivalenceVM[] equivalences = new EquivalenceVM[ident.Count];
                 double emisionesGrKm;
                 double emisionesTnKm;
+                double emision;
                 if (request.Kilometraje > 0)
                 {
                     if (line[0].fueId == 2)
                     {
+                        emision = Convert.ToDouble(averages[0].averagueCo2);
                         emisionesGrKm = Convert.ToDouble(averages[0].averagueCo2) * 100000;
                         emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(averages[0].averagueCo2), 3, MidpointRounding.ToEven);
                     }
                     else
                     {
+                        emision = Convert.ToDouble(line[0].huellaCarbono_TonKm);
                         emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
                         emisionesTnKm = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
                     }
+                    
                     for (int i = 0; i < ident.Count; i++)
                     {
-                        calc = Math.Round(request.Kilometraje * Convert.ToDouble(line[0].huellaCarbono_TonKm) * ident[i].idnEquivalence, 3, MidpointRounding.ToEven);
+                        calc = Math.Round(request.Kilometraje * emision * ident[i].idnEquivalence, 3, MidpointRounding.ToEven);
                         equivalences[i] = new EquivalenceVM()
                         {
                             Order = ident[i].idnOrden,
@@ -89,11 +93,13 @@ namespace Finanzauto.HuellaCarbono.App.Features.Logic.Calculator
                     var anio = Convert.ToInt32(DateTime.Today.Year.ToString("D")) - line[0].linYear;
                     if (line[0].fueId == 2)
                     {
+                        emision = Convert.ToDouble(averages[0].averagueCo2);
                         emisionesGrKm = Convert.ToDouble(averages[0].averagueCo2) * 100000;
                         emisionesTnKm = Math.Round(anio * averages[0].averagueKm * Convert.ToDouble(averages[0].averagueCo2), 3, MidpointRounding.ToEven);
                     }
                     else
                     {
+                        emision = Convert.ToDouble(averages[0].averagueCo2);
                         emisionesGrKm = Convert.ToDouble(line[0].EmisionesCO2_GrKm);
                         emisionesTnKm = Math.Round(anio * averages[0].averagueKm * Convert.ToDouble(line[0].huellaCarbono_TonKm), 3, MidpointRounding.ToEven);
                     }
